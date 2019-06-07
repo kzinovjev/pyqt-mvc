@@ -15,11 +15,25 @@ class WindowManager:
     def __init__(self):
         self.windows = {}
 
+    def close_all(self):
+        for window in self.windows.values():
+            window.close()
+
     def add(self, name, ui, widget):
         self.windows[name] = uic.loadUi(ui, widget)
 
     def __getitem__(self, name):
         return self.windows[name]
+
+
+class MainWindow(QtWidgets.QWidget):
+
+    def __init__(self, window_manager):
+        super().__init__()
+        self.window_manager = window_manager
+
+    def closeEvent(self, event):
+        self.window_manager.close_all()
 
 
 def bind_main_window(window, controller):
@@ -48,7 +62,7 @@ def run():
     window_manager = WindowManager()
     controller = TestController()
 
-    window_manager.add('main', 'main.ui', QtWidgets.QWidget())
+    window_manager.add('main', 'main.ui', MainWindow(window_manager))
     window_manager.add('second', 'second.ui', QtWidgets.QWidget())
     bind_windows(window_manager, controller)
 
