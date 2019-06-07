@@ -28,12 +28,30 @@ def bind_main_window(window, controller):
     window.runButton.clicked.connect(controller.run)
 
 
+def bind_windows(window_manager, controller):
+    main_window = window_manager['main']
+    second_window = window_manager['second']
+
+    controller.bind_lineEdit('text', main_window.textEdit)
+    controller.listen('text', main_window.advancedButton.setText)
+    main_window.runButton.clicked.connect(controller.run)
+    main_window.advancedButton.clicked.connect(second_window.show)
+
+    controller.bind_lineEdit('text', second_window.textEdit)
+    controller.bind_slider('size', second_window.slider)
+    controller.listen('size',
+                      lambda size: second_window.sliderLabel.setText(str(size)))
+
+
 def run():
     app = QtWidgets.QApplication([])
     window_manager = WindowManager()
     controller = TestController()
+
     window_manager.add('main', 'main.ui', QtWidgets.QWidget())
-    bind_main_window(window_manager['main'], controller)
+    window_manager.add('second', 'second.ui', QtWidgets.QWidget())
+    bind_windows(window_manager, controller)
+
     window_manager['main'].show()
     sys.exit(app.exec())
 

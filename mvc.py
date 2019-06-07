@@ -31,5 +31,5 @@ class QMVCController(MVCController):
         self.listen(key, checkBox.setChecked)
 
     def bind_slider(self, key, slider):
-        slider.sliderMoved.connect(self.updater(key))
+        slider.valueChanged.connect(self.updater(key))
         self.listen(key, slider.setValue)
