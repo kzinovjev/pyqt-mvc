@@ -15,7 +15,6 @@ class WindowManager:
             window.close()
 
     def add(self, name, ui, widget):
-        print(name, ui)
         self.windows[name] = uic.loadUi(ui, widget)
 
     def __getitem__(self, name):
@@ -31,30 +30,3 @@ class ManagedWindow(QtWidgets.QWidget):
 
     def bind(self, controller):
         pass
-
-
-class MainWindow(ManagedWindow):
-
-    def __init__(self, window_manager):
-        super().__init__('main', 'main.ui', window_manager)
-
-    def bind(self, controller):
-        controller.bind_lineEdit('text', self.textEdit)
-        controller.listen('text', self.advancedButton.setText)
-        self.runButton.clicked.connect(controller.run)
-        self.advancedButton.clicked.connect(self.window_manager['second'].show)
-
-    def closeEvent(self, event):
-        self.window_manager.close_all()
-
-
-class SecondWindow(ManagedWindow):
-
-    def __init__(self, window_manager):
-        super().__init__('second', 'second.ui', window_manager)
-    
-    def bind(self, controller):
-        controller.bind_lineEdit('text', self.textEdit)
-        controller.bind_slider('size', self.slider)
-        controller.listen('size',
-                          lambda size: self.sliderLabel.setText(str(size)))
