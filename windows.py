@@ -29,7 +29,7 @@ class ManagedWindow(QtWidgets.QWidget):
         window_manager.add(name, ui, self)
 
     def bind(self, controller):
-        pass
+        raise NotImplementedError
 
     @staticmethod
     def bind_lineEdit(controller, key, lineEdit):
