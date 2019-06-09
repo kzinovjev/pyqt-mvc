@@ -30,3 +30,18 @@ class ManagedWindow(QtWidgets.QWidget):
 
     def bind(self, controller):
         pass
+
+    @staticmethod
+    def bind_lineEdit(controller, key, lineEdit):
+        lineEdit.textChanged.connect(controller.updater(key))
+        controller.listen(key, lineEdit.setText)
+
+    @staticmethod
+    def bind_checkBox(controller, key, checkBox):
+        checkBox.toggled.connect(controller.updater(key))
+        controller.listen(key, checkBox.setChecked)
+
+    @staticmethod
+    def bind_slider(controller, key, slider):
+        slider.valueChanged.connect(controller.updater(key))
+        controller.listen(key, slider.setValue)

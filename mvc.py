@@ -1,4 +1,4 @@
-class MVCController:
+class Controller:
 
     def __init__(self):
         self.state = {}
@@ -18,18 +18,3 @@ class MVCController:
 
     def _get_listeners(self, key):
         return self.listeners.get(key, [])
-
-
-class QMVCController(MVCController):
-
-    def bind_lineEdit(self, key, lineEdit):
-        lineEdit.textChanged.connect(self.updater(key))
-        self.listen(key, lineEdit.setText)
-
-    def bind_checkBox(self, key, checkBox):
-        checkBox.toggled.connect(self.updater(key))
-        self.listen(key, checkBox.setChecked)
-
-    def bind_slider(self, key, slider):
-        slider.valueChanged.connect(self.updater(key))
-        self.listen(key, slider.setValue)

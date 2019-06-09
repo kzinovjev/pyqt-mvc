@@ -1,10 +1,10 @@
 import sys
-from mvc import QMVCController
+from mvc import Controller
 from windows import WindowManager, ManagedWindow
 from PyQt5 import QtWidgets
 
 
-class TestController(QMVCController):
+class TestController(Controller):
 
     @staticmethod
     def run():
@@ -17,7 +17,7 @@ class MainWindow(ManagedWindow):
         super().__init__('main', 'main.ui', window_manager)
 
     def bind(self, controller):
-        controller.bind_lineEdit('text', self.textEdit)
+        self.bind_lineEdit(controller, 'text', self.textEdit)
         controller.listen('text', self.advancedButton.setText)
         self.runButton.clicked.connect(controller.run)
         self.advancedButton.clicked.connect(self.window_manager['second'].show)
@@ -32,8 +32,8 @@ class SecondWindow(ManagedWindow):
         super().__init__('second', 'second.ui', window_manager)
 
     def bind(self, controller):
-        controller.bind_lineEdit('text', self.textEdit)
-        controller.bind_slider('size', self.slider)
+        self.bind_lineEdit(controller, 'text', self.textEdit)
+        self.bind_slider(controller, 'size', self.slider)
         controller.listen('size',
                           lambda size: self.sliderLabel.setText(str(size)))
 
