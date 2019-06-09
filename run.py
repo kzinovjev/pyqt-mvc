@@ -1,5 +1,5 @@
 import sys
-from mvc import Controller
+from controller import Controller
 from windows import WindowManager, ManagedWindow
 from PyQt5 import QtWidgets
 
