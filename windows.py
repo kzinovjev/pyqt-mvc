@@ -19,8 +19,8 @@ class WindowManager:
         for window in self.windows.values():
             window.close()
 
-    def add(self, name, ui, widget):
-        self.windows[name] = uic.loadUi(ui, widget)
+    def add(self, name, widget):
+        self.windows[name] = widget
 
     def __getitem__(self, name):
         return self.windows[name]
@@ -32,14 +32,14 @@ class ManagedWindow(QtWidgets.QWidget):
     in the window manager and then writing all the bidings, the managed window
     registers itself during the construction (window_manager.add) and also keeps
     all the code describing it's bindings (updaters and listeners).
-    It also has some helper methods to simplify binding of common input
-    widgets (lineEdit, checkBox, slider).
+    It also loads the layout (.ui file) and has some helper methods to
+    simplify binding of common input widgets (lineEdit, checkBox, slider).
     """
 
     def __init__(self, name, ui, window_manager):
         super().__init__()
         self.window_manager = window_manager
-        window_manager.add(name, ui, self)
+        window_manager.add(name, uic.loadUi(ui, self))
 
     def bind(self, controller):
         """
