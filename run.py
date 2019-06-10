@@ -73,8 +73,14 @@ def run():
     controller = TestController()
 
     main_window = MainWindow(window_manager)
+
+    # Here SecondWindow class is used as another window. The name is not
+    # provided, because the constructor has a default value defined ('second').
     SecondWindow(window_manager)
+
     main_window.addTab(FirstTab(window_manager), 'First')
+
+    # Here SecondWindow class is used to define a tab
     main_window.addTab(SecondWindow(window_manager, 'tab2'), 'Second')
     window_manager.bind_all(controller)
 

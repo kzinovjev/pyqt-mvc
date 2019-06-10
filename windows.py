@@ -12,10 +12,18 @@ class WindowManager:
         self.windows = {}
 
     def bind_all(self, controller):
+        """
+        Instead of manually calling 'bind' method of each window, this method
+        binds all the registered windows to the same controller.
+        """
         for window in self.windows.values():
             window.bind(controller)
 
     def close_all(self):
+        """
+        The main window must call this method when closed, to ensure that all
+        the other windows are closed too.
+        """
         for window in self.windows.values():
             window.close()
 
@@ -23,6 +31,9 @@ class WindowManager:
         self.windows[name] = widget
 
     def __getitem__(self, name):
+        """
+        Allows to use window_manager[name] syntax
+        """
         return self.windows[name]
 
 
@@ -50,7 +61,18 @@ class ManagedWindow(QtWidgets.QWidget):
 
     @staticmethod
     def bind_lineEdit(controller, key, lineEdit):
+        """
+        Binds lineEdit text to the data point defined by 'key': whenever
+        the user types something in the provided lineEdit, the controller will
+        be informed and will call all the listeners for the given key. And
+        vice versa: whenever by any reason the data changes, the controller
+        will call the setText method of lineEdit with the changed data.
+        """
+        # Here note that controller.updater(key) returns a function, which,
+        # whenever the text in lineEdit is changed, will change the data.
         lineEdit.textChanged.connect(controller.updater(key))
+        # the method lineEdit.setText is used as a listener, so the text will
+        # be changed whenever the data changes
         controller.listen(key, lineEdit.setText)
 
     @staticmethod
