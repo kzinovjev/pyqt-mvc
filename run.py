@@ -5,6 +5,8 @@ from PyQt5 import QtWidgets
 
 
 class TestController(Controller):
+    # Any 'business logic' that does not depend on PyQt (like writing out
+    # inputs, running prep.py etc.) goes into controller.
 
     @staticmethod
     def run():
@@ -14,6 +16,10 @@ class TestController(Controller):
 class MainWindow(QtWidgets.QTabWidget):
 
     def __init__(self, window_manager):
+        # There is no 'main.ui' file, sice the main window is only a container
+        # for tabs. Also, since it has no other widgets inside, nothing can
+        # depend on the data and there is no need to register it in the
+        # window manager (window_manager.add(...)).
         super().__init__()
         self.window_manager = window_manager
         self.setWindowTitle('MVC example')
@@ -41,6 +47,9 @@ class FirstTab(ManagedWindow):
 class SecondWindow(ManagedWindow):
 
     def __init__(self, window_manager, name='second'):
+        # Here the constructor has an extra 'name' argument to allow registering
+        # it two times in the window manager with different names: once as the
+        # second tab in the main window and once as a separate window.
         super().__init__(name, 'second.ui', window_manager)
 
     def bind(self, controller):

@@ -2,6 +2,11 @@ from PyQt5 import QtWidgets, uic
 
 
 class WindowManager:
+    """
+    Simplifies interaction between windows. Each window must register itself in
+    the window manager with a unique name. Then, the window can always be
+    accessed through window manager as window_manager[name].
+    """
 
     def __init__(self):
         self.windows = {}
@@ -22,6 +27,14 @@ class WindowManager:
 
 
 class ManagedWindow(QtWidgets.QWidget):
+    """
+    Simplifies window management. Instead of manually registering every window
+    in the window manager and then writing all the bidings, the managed window
+    registers itself during the construction (window_manager.add) and also keeps
+    all the code describing it's bindings (updaters and listeners).
+    It also has some helper methods to simplify binding of common input
+    widgets (lineEdit, checkBox, slider).
+    """
 
     def __init__(self, name, ui, window_manager):
         super().__init__()
@@ -29,6 +42,10 @@ class ManagedWindow(QtWidgets.QWidget):
         window_manager.add(name, ui, self)
 
     def bind(self, controller):
+        """
+        All the binding code for the window goes here. That way the code for
+        each window is kept in the corresponding class.
+        """
         raise NotImplementedError
 
     @staticmethod
