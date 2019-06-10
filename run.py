@@ -16,7 +16,7 @@ class TestController(Controller):
 class MainWindow(QtWidgets.QTabWidget):
 
     def __init__(self, window_manager):
-        # There is no 'main.ui' file, sice the main window is only a container
+        # There is no 'main.ui' file, since the main window is only a container
         # for tabs. Also, since it has no other widgets inside, nothing can
         # depend on the data and there is no need to register it in the
         # window manager (window_manager.add(...)).
@@ -35,9 +35,17 @@ class FirstTab(ManagedWindow):
         super().__init__('tab1', 'first.ui', window_manager)
 
     def bind(self, controller):
+        # Simple binding between text in textEdit and 'text' data field
         self.bind_lineEdit(controller, 'text', self.textEdit)
+
+        # Example of a custom listener. Whenever 'text' field in the state
+        # changes, the text on advancedButton will change too.
         controller.listen('text', self.advancedButton.setText)
+
+        # Calling some code from the controller on click
         self.runButton.clicked.connect(controller.run)
+
+        # Using window manager to show another window
         self.advancedButton.clicked.connect(self.window_manager['second'].show)
 
     def closeEvent(self, event):
