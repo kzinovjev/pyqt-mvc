@@ -11,10 +11,22 @@ class TestController(Controller):
         print('RUN!')
 
 
-class MainWindow(ManagedWindow):
+class MainWindow(QtWidgets.QTabWidget):
 
     def __init__(self, window_manager):
-        super().__init__('main', 'main.ui', window_manager)
+        super().__init__()
+        self.window_manager = window_manager
+        self.setWindowTitle('MVC example')
+        self.setFixedSize(220, 100)
+
+    def closeEvent(self, event):
+        self.window_manager.close_all()
+
+
+class FirstTab(ManagedWindow):
+
+    def __init__(self, window_manager):
+        super().__init__('tab1', 'first.ui', window_manager)
 
     def bind(self, controller):
         self.bind_lineEdit(controller, 'text', self.textEdit)
@@ -28,8 +40,8 @@ class MainWindow(ManagedWindow):
 
 class SecondWindow(ManagedWindow):
 
-    def __init__(self, window_manager):
-        super().__init__('second', 'second.ui', window_manager)
+    def __init__(self, window_manager, name='second'):
+        super().__init__(name, 'second.ui', window_manager)
 
     def bind(self, controller):
         self.bind_lineEdit(controller, 'text', self.textEdit)
@@ -43,11 +55,13 @@ def run():
     window_manager = WindowManager()
     controller = TestController()
 
-    MainWindow(window_manager)
+    main_window = MainWindow(window_manager)
     SecondWindow(window_manager)
+    main_window.addTab(FirstTab(window_manager), 'First')
+    main_window.addTab(SecondWindow(window_manager, 'tab2'), 'Second')
     window_manager.bind_all(controller)
 
-    window_manager['main'].show()
+    main_window.show()
     sys.exit(app.exec())
 
 
