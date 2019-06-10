@@ -40,14 +40,13 @@ def run():
 
     main_window = MainWindow(window_manager)
 
-    # Here SecondTab class is used as another window. The name is not
-    # provided, because the constructor has a default value defined ('second').
-    SecondTab(window_manager)
+    # Here SecondTab class is used as the second window.
+    SecondTab('second', window_manager)
 
-    main_window.addTab(FirstTab(window_manager), 'First')
+    main_window.addTab(FirstTab('tab1', window_manager), 'First')
 
     # Here SecondTab class is used to define a tab
-    main_window.addTab(SecondTab(window_manager, 'tab2'), 'Second')
+    main_window.addTab(SecondTab('tab2', window_manager), 'Second')
     window_manager.bind_all(controller)
 
     main_window.show()

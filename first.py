@@ -3,8 +3,8 @@ from windows import ManagedWindow
 
 class FirstTab(ManagedWindow):
 
-    def __init__(self, window_manager):
-        super().__init__('tab1', 'first.ui', window_manager)
+    def __init__(self, name, window_manager):
+        super().__init__(name, 'first.ui', window_manager)
 
     def bind(self, controller):
         # Simple binding between text in textEdit and 'text' data field

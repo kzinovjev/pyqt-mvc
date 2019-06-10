@@ -48,6 +48,8 @@ class ManagedWindow(QtWidgets.QWidget):
     """
 
     def __init__(self, name, ui, window_manager):
+        # The 'name' argument allows registering the window multiple times in
+        # the window manager. For example, as a tab and as a separate window.
         super().__init__()
         self.window_manager = window_manager
         window_manager.add(name, uic.loadUi(ui, self))
