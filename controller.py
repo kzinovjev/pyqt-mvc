@@ -18,6 +18,8 @@ class Controller:
         """
         Updates the data and calls all the corresponding listeners
         """
+        if self.state.get(key, None) == value:
+            return
         self.state[key] = value
         print(self.state)
         for listener in self._get_listeners(key):
